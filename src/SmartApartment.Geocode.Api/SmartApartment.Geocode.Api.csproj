@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <AWSProjectType>Lambda</AWSProjectType>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartApartment.Geocode.Core\SmartApartment.Geocode.Core.csproj" />
+    <ProjectReference Include="..\SmartApartment.Geocode.Infrastructure\SmartApartment.Geocode.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.Core" Version="2.1.0" />
+    <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.3.1" />
+    <PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="2.6.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.7" />
+  </ItemGroup>
+</Project>

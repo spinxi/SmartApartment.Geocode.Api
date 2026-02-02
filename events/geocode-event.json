@@ -1,0 +1,1 @@
+﻿{"resource":"/Geocode","path":"/Geocode","httpMethod":"GET","headers":{"Accept":"application/json","Host":"api.example.com"},"queryStringParameters":{"address":"1600 Pennsylvania Avenue NW Washington DC 20500"},"body":null,"isBase64Encoded":false}

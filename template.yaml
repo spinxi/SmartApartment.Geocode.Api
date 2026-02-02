@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  SmartApartment Geocode API
+
+Parameters:
+  GoogleApiKey:
+    Type: String
+    Description: Google Geocoding API Key
+    Default: "NONE"
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 256
+
+Resources:
+  GeocodeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src/SmartApartment.Geocode.Api/
+      Handler: SmartApartment.Geocode.Api::SmartApartment.Geocode.Api.Function::FunctionHandler
+      Runtime: dotnet6
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          GoogleApiKey: !Ref GoogleApiKey
+          DynamoDbTableName: !Ref GeocodeCacheTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref GeocodeCacheTable
+      Events:
+        Geocode:
+          Type: Api
+          Properties:
+            Path: /Geocode
+            Method: get
+
+  GeocodeCacheTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: GeocodeCache
+      AttributeDefinitions:
+        - AttributeName: Address
+          AttributeType: S
+      KeySchema:
+        - AttributeName: Address
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      TimeToLiveSpecification:
+        AttributeName: TTL
+        Enabled: true
+
+Outputs:
+  GeocodeApi:
+    Description: "API Gateway endpoint URL for Prod stage for Geocode function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/Prod/Geocode"
+  GeocodeFunction:
+    Description: "Geocode Lambda Function ARN"
+    Value: !GetAtt GeocodeFunction.Arn
+  GeocodeFunctionIamRole:
+    Description: "Implicit IAM Role created for Geocode function"
+    Value: !GetAtt GeocodeFunctionRole.Arn
